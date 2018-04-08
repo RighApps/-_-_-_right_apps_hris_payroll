@@ -244,6 +244,7 @@
             // 
             // pictureBox3
             // 
+            
             this.pictureBox3.Dock = System.Windows.Forms.DockStyle.Top;
             this.pictureBox3.Image = global::Human_Resource_Information_System.Properties.Resources.icon_timekeeping_and_payroll_1;
             this.pictureBox3.Location = new System.Drawing.Point(0, 0);
@@ -254,6 +255,7 @@
             this.pictureBox3.TabIndex = 83;
             this.pictureBox3.TabStop = false;
             this.pictureBox3.Click += new System.EventHandler(this.pictureBox3_Click);
+            
             // 
             // Login
             // 
