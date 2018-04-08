@@ -14,6 +14,7 @@ namespace Human_Resource_Information_System
     {
         thisDatabase db = new thisDatabase();
         public String ok = "";
+        public String notok = "";
         public Login()
         {
             InitializeComponent();
