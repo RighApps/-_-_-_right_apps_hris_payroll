@@ -37,10 +37,9 @@
             this.dgvl_employee = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dgvl_userid = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.chk_leave = new System.Windows.Forms.CheckBox();
-            this.chk_odeduc = new System.Windows.Forms.CheckBox();
-            this.chk_oearn = new System.Windows.Forms.CheckBox();
-            this.chk_loan = new System.Windows.Forms.CheckBox();
+            this.checkBox3 = new System.Windows.Forms.CheckBox();
+            this.checkBox2 = new System.Windows.Forms.CheckBox();
+            this.checkBox1 = new System.Windows.Forms.CheckBox();
             this.pbar = new System.Windows.Forms.ProgressBar();
             this.btn_generate = new System.Windows.Forms.Button();
             this.bg_worker = new System.ComponentModel.BackgroundWorker();
@@ -125,10 +124,9 @@
             // 
             // groupBox2
             // 
-            this.groupBox2.Controls.Add(this.chk_leave);
-            this.groupBox2.Controls.Add(this.chk_odeduc);
-            this.groupBox2.Controls.Add(this.chk_oearn);
-            this.groupBox2.Controls.Add(this.chk_loan);
+            this.groupBox2.Controls.Add(this.checkBox3);
+            this.groupBox2.Controls.Add(this.checkBox2);
+            this.groupBox2.Controls.Add(this.checkBox1);
             this.groupBox2.Controls.Add(this.pbar);
             this.groupBox2.Controls.Add(this.btn_generate);
             this.groupBox2.Dock = System.Windows.Forms.DockStyle.Top;
@@ -139,45 +137,38 @@
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Generate Payroll";
             // 
-            // chk_leave
+            // checkBox3
             // 
-            this.chk_leave.AutoSize = true;
-            this.chk_leave.Location = new System.Drawing.Point(534, 54);
-            this.chk_leave.Name = "chk_leave";
-            this.chk_leave.Size = new System.Drawing.Size(108, 19);
-            this.chk_leave.TabIndex = 5;
-            this.chk_leave.Text = "Include Leaves";
-            this.chk_leave.UseVisualStyleBackColor = true;
+            this.checkBox3.AutoSize = true;
+            this.checkBox3.Location = new System.Drawing.Point(296, 54);
+            this.checkBox3.Name = "checkBox3";
+            this.checkBox3.Size = new System.Drawing.Size(164, 19);
+            this.checkBox3.TabIndex = 4;
+            this.checkBox3.Text = "Include Other Deductions";
+            this.checkBox3.UseVisualStyleBackColor = true;
+            this.checkBox3.Visible = false;
             // 
-            // chk_odeduc
+            // checkBox2
             // 
-            this.chk_odeduc.AutoSize = true;
-            this.chk_odeduc.Location = new System.Drawing.Point(251, 54);
-            this.chk_odeduc.Name = "chk_odeduc";
-            this.chk_odeduc.Size = new System.Drawing.Size(164, 19);
-            this.chk_odeduc.TabIndex = 4;
-            this.chk_odeduc.Text = "Include Other Deductions";
-            this.chk_odeduc.UseVisualStyleBackColor = true;
+            this.checkBox2.AutoSize = true;
+            this.checkBox2.Location = new System.Drawing.Point(78, 54);
+            this.checkBox2.Name = "checkBox2";
+            this.checkBox2.Size = new System.Drawing.Size(151, 19);
+            this.checkBox2.TabIndex = 3;
+            this.checkBox2.Text = "Include Other Earnings";
+            this.checkBox2.UseVisualStyleBackColor = true;
+            this.checkBox2.Visible = false;
             // 
-            // chk_oearn
+            // checkBox1
             // 
-            this.chk_oearn.AutoSize = true;
-            this.chk_oearn.Location = new System.Drawing.Point(78, 54);
-            this.chk_oearn.Name = "chk_oearn";
-            this.chk_oearn.Size = new System.Drawing.Size(151, 19);
-            this.chk_oearn.TabIndex = 3;
-            this.chk_oearn.Text = "Include Other Earnings";
-            this.chk_oearn.UseVisualStyleBackColor = true;
-            // 
-            // chk_loan
-            // 
-            this.chk_loan.AutoSize = true;
-            this.chk_loan.Location = new System.Drawing.Point(428, 54);
-            this.chk_loan.Name = "chk_loan";
-            this.chk_loan.Size = new System.Drawing.Size(97, 19);
-            this.chk_loan.TabIndex = 2;
-            this.chk_loan.Text = "Include Loan";
-            this.chk_loan.UseVisualStyleBackColor = true;
+            this.checkBox1.AutoSize = true;
+            this.checkBox1.Location = new System.Drawing.Point(523, 54);
+            this.checkBox1.Name = "checkBox1";
+            this.checkBox1.Size = new System.Drawing.Size(97, 19);
+            this.checkBox1.TabIndex = 2;
+            this.checkBox1.Text = "Include Loan";
+            this.checkBox1.UseVisualStyleBackColor = true;
+            this.checkBox1.Visible = false;
             // 
             // pbar
             // 
@@ -233,9 +224,9 @@
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.Button btn_generate;
         private System.Windows.Forms.ProgressBar pbar;
-        private System.Windows.Forms.CheckBox chk_odeduc;
-        private System.Windows.Forms.CheckBox chk_oearn;
-        private System.Windows.Forms.CheckBox chk_loan;
+        private System.Windows.Forms.CheckBox checkBox3;
+        private System.Windows.Forms.CheckBox checkBox2;
+        private System.Windows.Forms.CheckBox checkBox1;
         private System.ComponentModel.BackgroundWorker bg_worker;
         private System.Windows.Forms.DataGridView dgv_list;
         private System.Windows.Forms.DataGridViewTextBoxColumn dgvl_date;
@@ -243,6 +234,5 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn dgvl_payroll;
         private System.Windows.Forms.DataGridViewTextBoxColumn dgvl_employee;
         private System.Windows.Forms.DataGridViewTextBoxColumn dgvl_userid;
-        private System.Windows.Forms.CheckBox chk_leave;
     }
 }

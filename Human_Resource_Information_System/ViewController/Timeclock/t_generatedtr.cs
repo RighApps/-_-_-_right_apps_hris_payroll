@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Globalization;
 
 namespace Human_Resource_Information_System
 {
@@ -64,7 +65,7 @@ namespace Human_Resource_Information_System
 
                 DataTable logs = db.QueryBySQLCode(query);
 
-                if (logs.Rows.Count > 0)
+                if (logs != null && logs.Rows.Count > 0)
                 {
                     for (int r = 0; r < logs.Rows.Count; r++)
                     {
@@ -101,18 +102,27 @@ namespace Human_Resource_Information_System
             DataTable sched = db.QueryBySQLCode("SELECT shift_sched_from,shift_sched_to FROM rssys.hr_employee WHERE empid = '" + empid + "'");
             if (sched.Rows.Count > 0)
             {
-                time_from = gm.toDateString(sched.Rows[0]["shift_sched_from"].ToString(), "hh:mm");
-                time_to = gm.toDateString(sched.Rows[0]["shift_sched_to"].ToString(), "hh:mm");
+                time_from = sched.Rows[0]["shift_sched_from"].ToString();
+                time_to = sched.Rows[0]["shift_sched_to"].ToString();
 
-                query = "SELECT DISTINCT e.empid,work_date,(SELECT MAX(time_log) FROM rssys.hr_tito2 st WHERE work_date=t.work_date AND status='O' AND empid=t.empid) AS timeout FROM rssys.hr_tito2 t LEFT JOIN rssys.hr_employee e ON t.empid=e.empid WHERE t.work_date BETWEEN '" + gm.toDateString(date_from, "") + "' AND '" + gm.toDateString(date_to, "") + "' ORDER BY work_date";
-
+                
+                query = "SELECT DISTINCT e.empid,work_date,(SELECT MAX(time_log) FROM rssys.hr_tito2 st WHERE work_date=t.work_date AND status='O' AND empid=t.empid) AS timeout FROM rssys.hr_tito2 t LEFT JOIN rssys.hr_employee e ON t.empid=e.empid WHERE t.empid = '" + empid + "' AND t.work_date BETWEEN '" + gm.toDateString(date_from, "") + "' AND '" + gm.toDateString(date_to, "") + "' ORDER BY work_date";
+                //System.Diagnostics.Debug.Write(query);
                 DataTable logs = db.QueryBySQLCode(query);
-                if (logs.Rows.Count > 0)
+                if (logs != null && logs.Rows.Count > 0)
                 {
                     for (int r = 0; r < logs.Rows.Count; r++)
                     {
-                        timeout = logs.Rows[r]["timeout"].ToString();
-
+                        if (logs.Rows[r]["timeout"].ToString() != "")
+                        {
+                            timeout = logs.Rows[r]["timeout"].ToString();
+                        }
+                        else
+                        {
+                            timeout = time_from;
+                        }
+                        
+                        
                         DateTime datetime_out = Convert.ToDateTime(DateTime.Now.ToString("M/d/yyyy") + " " + timeout);
                         DateTime datetime_to = Convert.ToDateTime(DateTime.Now.ToString("M/d/yyyy") + " " + time_to);
                         int res = DateTime.Compare(datetime_to, datetime_out);
@@ -144,14 +154,14 @@ namespace Human_Resource_Information_System
             if(sched.Rows.Count > 0)
             {
 
-                time_from = gm.toDateString(sched.Rows[0]["shift_sched_from"].ToString(), "hh:mm");
-                time_to = gm.toDateString(sched.Rows[0]["shift_sched_to"].ToString(), "hh:mm");
+                time_from = sched.Rows[0]["shift_sched_from"].ToString();
+                time_to = sched.Rows[0]["shift_sched_to"].ToString();
 
 
-                query = "SELECT DISTINCT e.empid,work_date,(SELECT MAX(time_log) FROM rssys.hr_tito2 st WHERE work_date=t.work_date AND status='O' AND empid=t.empid) AS timeout FROM rssys.hr_tito2 t LEFT JOIN rssys.hr_employee e ON t.empid=e.empid WHERE t.work_date BETWEEN '" + gm.toDateString(date_from, "") + "' AND '" + gm.toDateString(date_to, "") + "' ORDER BY work_date";
-
+                query = "SELECT DISTINCT e.empid,work_date,(SELECT MAX(time_log) FROM rssys.hr_tito2 st WHERE work_date=t.work_date AND status='O' AND empid=t.empid) AS timeout FROM rssys.hr_tito2 t LEFT JOIN rssys.hr_employee e ON t.empid=e.empid WHERE t.empid = '" + empid + "' AND t.work_date BETWEEN '" + gm.toDateString(date_from, "") + "' AND '" + gm.toDateString(date_to, "") + "' ORDER BY work_date";
+                
                 DataTable logs = db.QueryBySQLCode(query);
-                if (logs.Rows.Count > 0)
+                if (logs != null && logs.Rows.Count > 0)
                 {
                     for (int r = 0; r < logs.Rows.Count; r++)
                     {
@@ -181,7 +191,7 @@ namespace Human_Resource_Information_System
             String result = "0";
             DataTable sched = db.QueryBySQLCode("SELECT shift_sched_from,shift_sched_to FROM rssys.hr_employee WHERE empid = '" + empid + "'");
             String query = "";
-
+            
             if (sched.Rows.Count > 0) {
 
                 String time_from = sched.Rows[0]["shift_sched_from"].ToString();
@@ -195,7 +205,7 @@ namespace Human_Resource_Information_System
 
                 try
                 {
-                    if (logs.Rows.Count > 0)
+                    if (logs != null && logs.Rows.Count > 0)
                     {
                         result = logs.Rows.Count.ToString();
                     }
@@ -220,23 +230,27 @@ namespace Human_Resource_Information_System
             DateTime work_date;
             String dayoff1 = dt.Rows[0]["dayoff1"].ToString();
             String dayoff2 = dt.Rows[0]["dayoff2"].ToString();
-            String dayno = "";
+            int dayno = 0;
             DateTime StartDate = DateTime.Parse(date_from);
             DateTime EndDate = DateTime.Parse(date_to);
 
-           // MessageBox.Show(dayoff1 + " : " + dayoff2);
+            int off1 = Convert.ToInt32(dayoff1[0].ToString());
+            int off2 = Convert.ToInt32(dayoff2[0].ToString());
+            //COMPUTER NUMBER OF WORKING DAYS
+            
             foreach (DateTime day in EachDay(StartDate, EndDate))
             {
-                dayno = day.DayOfWeek.ToString("D");
-                if (dayno != dayoff1 && dayno != dayoff2)
+
+                dayno = Convert.ToInt32(day.DayOfWeek.ToString("d")) + 1;
+                if (dayno !=  off1 && dayno != off2)
                 {
                     total++;
                 }
             }
-           // MessageBox.Show("Total working days :" + total + " Total worked days : " + total_worked);
             try
             {
                 result = (Convert.ToInt32(total) - Convert.ToInt32(total_worked)).ToString();
+               // MessageBox.Show("Total working days :" + total + " Total worked days : " + total_worked + "Result is : " + result);
             }catch(Exception ex)
             {
                 result = "0";
@@ -281,8 +295,8 @@ namespace Human_Resource_Information_System
                             }
                         }
 
-                        if (use && selectedIndx < 1) 
-                        {
+                      //  if (use && selectedIndx < 1) 
+                      //  {
                             days_worked = dgv_list_logs["days_worked", r].Value.ToString();
                             absences = dgv_list_logs["absent", r].Value.ToString();
                             late = dgv_list_logs["total_late", r].Value.ToString();
@@ -306,7 +320,7 @@ namespace Human_Resource_Information_System
                                 MessageBox.Show("The payroll period for this employee no. " + empid + " is already generated to Payroll System. DTR can not be re-generated.");
                                 success = false;
                             }
-                        }
+                       // }
 
                     }));
 
@@ -382,6 +396,7 @@ namespace Human_Resource_Information_System
                 }));
                 for (int r = 0; r < dt.Rows.Count; r++)
                 {
+
                     empid = dt.Rows[r]["empid"].ToString();
                     dgv_list_logs.Invoke(new Action(() =>
                     {
@@ -399,9 +414,10 @@ namespace Human_Resource_Information_System
                         inc_pbar(bar, dt.Rows.Count);
                         bar++;
                     }));
+                    
                 }
 
-                DialogResult result = MessageBox.Show("Do you want to save generated " + (indx == -1 ? "all" : "") + " employee's DTR?", "Confirmation", MessageBoxButtons.YesNo);
+                DialogResult result = MessageBox.Show("Do you want to save generated " + (indx == -1 ? "all" : "") + " employee's DTR?", "Confirmation", MessageBoxButtons.YesNoCancel);
                 if (result == DialogResult.Yes)
                 {
                     cbo_employee.Invoke(new Action(() =>
@@ -420,7 +436,6 @@ namespace Human_Resource_Information_System
                                 cbo_employee.SelectedIndex = i;
                                 empids[i] = cbo_employee.SelectedValue.ToString();
                             }
-                            cbo_employee.SelectedIndex = -1;
                         }
 
                         foreach (String _empid in empids)
@@ -440,6 +455,7 @@ namespace Human_Resource_Information_System
                         }
 
                     }));
+
 
                     success = true;
                     if (save_summary(code))
@@ -468,7 +484,9 @@ namespace Human_Resource_Information_System
                         db.DeleteOnTable(table, "summary_code='" + code + "'");
                         MessageBox.Show("Failed on saving.");
                     }
+
                 }
+
             }
         }
 
@@ -576,7 +594,7 @@ namespace Human_Resource_Information_System
 
         private void dgv_list_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
-
+             
         }
 
 

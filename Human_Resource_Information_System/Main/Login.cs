@@ -13,7 +13,7 @@ namespace Human_Resource_Information_System
     public partial class Login : Form
     {
         thisDatabase db = new thisDatabase();
-
+        public String ok = "";
         public Login()
         {
             InitializeComponent();
@@ -91,6 +91,16 @@ namespace Human_Resource_Information_System
             //System.Diagnostics.Process.Start("https://web.facebook.com/RightAppsSolutions/");
 
             MessageBox.Show("For information, contact 0915-806-0792 / 0942-734-7599.\nAlso like us on facebook \n https://web.facebook.com/RightAppsOfficial/");
+        }
+
+        private void panel1_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void pictureBox3_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
